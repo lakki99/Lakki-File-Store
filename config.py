@@ -56,11 +56,11 @@ BATCH_FILE_CAPTION = environ.get("BATCH_FILE_CAPTION", CUSTOM_FILE_CAPTION)
 PUBLIC_FILE_STORE = is_enabled((environ.get('PUBLIC_FILE_STORE', "True")), True)
 
 # Verify Info :-
-VERIFY_MODE = bool(environ.get('VERIFY_MODE', False)) # Set True or False
+VERIFY_MODE = bool(environ.get('VERIFY_MODE', True)) # Set True or False
 
 # If Verify Mode Is True Then Fill All Required Variable, If False Then Don't Fill.
 SHORTLINK_URL = environ.get("SHORTLINK_URL", "pocolinks.com") # shortlink domain without https://
-SHORTLINK_API = environ.get("SHORTLINK_API", "7882937525:AAGUrcnU4thPCATEYFxbYaaFckIRDYOmcSQ") # shortlink api
+SHORTLINK_API = environ.get("SHORTLINK_API", "1dc6da47d0a983933d54b24bf640e00efea15dd6") # shortlink api
 VERIFY_TUTORIAL = environ.get("VERIFY_TUTORIAL", "https://t.me/sk_entertains") # how to open link 
 
 # Website Info:
