@@ -60,7 +60,7 @@ async def start(client, message):
         await client.send_message(LOG_CHANNEL, script.LOG_TEXT.format(message.from_user.id, message.from_user.mention))
     if len(message.command) != 2:
         buttons = [[
-            InlineKeyboardButton('💝 F͜͡O͜͡L͜͡L͜͡O͜͡W͜͡ M͜͡Y͜͡ I͜͡N͜͡S͜͡T͜͡A͜͡G͜͡R͜͡A͜͡M͜͡ P͜͡A͜͡G͜͡E͜͡', url='https://youtube.com/@Tech_VJ')
+            InlineKeyboardButton('💝 F͜͡O͜͡L͜͡L͜͡O͜͡W͜͡ M͜͡Y͜͡ I͜͡N͜͡S͜͡T͜͡A͜͡G͜͡R͜͡A͜͡M͜͡ P͜͡A͜͡G͜͡E͜͡', url='https://www.instagram.com/animehometelugu')
             ],[
             InlineKeyboardButton('😺 Aɴɪᴍᴇ Sᴜᴘᴘᴏʀᴛ', url='https://t.me/+Et4zamCuQSc5NTA1'),
             InlineKeyboardButton('😽 ᴜᴘᴅᴀᴛᴇ ᴄʜᴀɴɴᴇʟ', url='https://t.me/Anime_spectators')
@@ -341,10 +341,10 @@ async def cb_handler(client: Client, query: CallbackQuery):
     
     elif query.data == "start":
         buttons = [[
-            InlineKeyboardButton('💝 F͜͡O͜͡L͜͡L͜͡O͜͡W͜͡ M͜͡Y͜͡ I͜͡N͜͡S͜͡T͜͡A͜͡G͜͡R͜͡A͜͡M͜͡ P͜͡A͜͡G͜͡E͜͡', url='https://youtube.com/@Tech_VJ')
+            InlineKeyboardButton('💝 F͜͡O͜͡L͜͡L͜͡O͜͡W͜͡ M͜͡Y͜͡ I͜͡N͜͡S͜͡T͜͡A͜͡G͜͡R͜͡A͜͡M͜͡ P͜͡A͜͡G͜͡E͜͡', url='https://www.instagram.com/animehometelugu')
         ],[
-            InlineKeyboardButton('😺 Aɴɪᴍᴇ Sᴜᴘᴘᴏʀᴛ', url='https://t.me/vj_bot_disscussion'),
-            InlineKeyboardButton('😽 ᴜᴘᴅᴀᴛᴇ ᴄʜᴀɴɴᴇʟ', url='https://t.me/vj_botz')
+            InlineKeyboardButton('😺 Aɴɪᴍᴇ Sᴜᴘᴘᴏʀᴛ', url='https://t.me/+Et4zamCuQSc5NTA1'),
+            InlineKeyboardButton('😽 ᴜᴘᴅᴀᴛᴇ ᴄʜᴀɴɴᴇʟ', url='https://t.me/Anime_spectators')
         ],[
             InlineKeyboardButton('💁‍♀️ ʜᴇʟᴘ', callback_data='help'),
             InlineKeyboardButton('😊 ᴀʙᴏᴜᴛ', callback_data='about')
