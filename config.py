@@ -23,7 +23,7 @@ API_HASH = environ.get("API_HASH", "897f1c440892cfc46c7e222dfb37d015")
 BOT_TOKEN = environ.get("BOT_TOKEN", "")
 
 PICS = (environ.get('PICS', 'https://graph.org/file/7c6df20032fe4e6a2a729-c5ecb08505386ca643.jpg')).split() # Bot Start Picture
-ADMINS = [int(admin) if id_pattern.search(admin) else admin for admin in environ.get('ADMINS', '').split()]
+ADMINS = [int(admin) if id_pattern.search(admin) else admin for admin in environ.get('ADMINS', '7592041488').split()]
 BOT_USERNAME = environ.get("BOT_USERNAME", "Nezuko_Kamado_sharebot") # without @
 PORT = environ.get("PORT", "8080")
 
