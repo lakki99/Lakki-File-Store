@@ -47,42 +47,39 @@ async def incoming_gen_link(bot, message):
         await message.reply(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\n🖇️ sʜᴏʀᴛ ʟɪɴᴋ :- {short_link}</b>")
     else:
         await message.reply(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\n🔗 ᴏʀɪɢɪɴᴀʟ ʟɪɴᴋ :- {share_link}</b>")
+        
 
-
-@Client.on_message(filters.command(['link']) & filters.create(allowed))
+@Client.on_message(
+    filters.command(['link']) &
+    (filters.reply & (filters.document | filters.video | filters.audio | filters.photo | filters.text)) &
+    filters.create(allowed)
+)
 async def gen_link_s(bot, message):
+    username = (await bot.get_me()).username
     replied = message.reply_to_message
     if not replied:
-        return await message.reply('⚠️ Reply to any message (text, photo, video, etc.) to get a shareable link.')
-
-    username = (await bot.get_me()).username
-
-    try:
-        if replied.text:
-            post = await bot.send_message(LOG_CHANNEL, replied.text)
-            prefix = "text_"
-        else:
-            post = await replied.copy(LOG_CHANNEL)
-            prefix = "file_"
-    except Exception as e:
-        return await message.reply(f"⚠️ Error: {e}")
-
+        return await message.reply('Reply to a message to get a shareable link.')
+# Don't Remove Credit Tg - @VJ_Botz
+# Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
+# Ask Doubt on telegram @KingVJ01
+    
+    post = await replied.copy(LOG_CHANNEL)
     file_id = str(post.id)
-    outstr = base64.urlsafe_b64encode((prefix + file_id).encode("ascii")).decode().strip("=")
-
+    string = f"file_"
+    string += file_id
+    outstr = base64.urlsafe_b64encode(string.encode("ascii")).decode().strip("=")
     user_id = message.from_user.id
     user = await get_user(user_id)
-
-    if WEBSITE_URL_MODE:
+    if WEBSITE_URL_MODE == True:
         share_link = f"{WEBSITE_URL}?Tech_VJ={outstr}"
     else:
         share_link = f"https://t.me/{username}?start={outstr}"
-
-    if user.get("base_site") and user.get("shortener_api"):
+    if user["base_site"] and user["shortener_api"] != None:
         short_link = await get_short_link(user, share_link)
         await message.reply(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\n🖇️ sʜᴏʀᴛ ʟɪɴᴋ :- {short_link}</b>")
     else:
         await message.reply(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\n🔗 ᴏʀɪɢɪɴᴀʟ ʟɪɴᴋ :- {share_link}</b>")
+        
 
 # Don't Remove Credit Tg - @VJ_Botz
 # Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
