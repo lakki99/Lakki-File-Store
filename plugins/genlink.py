@@ -27,7 +27,7 @@ async def allowed(_, __, message):
 # Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
 # Ask Doubt on telegram @KingVJ01
 
-@Client.on_message((filters.document | filters.video | filters.audio) & filters.private & filters.create(allowed))
+@Client.on_message((filters.document | filters.video | filters.audio | filters.text) & filters.private & filters.create(allowed))
 async def incoming_gen_link(bot, message):
     username = (await bot.get_me()).username
     file_type = message.media
