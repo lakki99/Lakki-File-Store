@@ -57,18 +57,18 @@ async def gen_link_s(bot, message):
 
     username = (await bot.get_me()).username
 
-    # Handle all types, including text
     try:
         if replied.text:
             post = await bot.send_message(LOG_CHANNEL, replied.text)
+            prefix = "text_"
         else:
             post = await replied.copy(LOG_CHANNEL)
+            prefix = "file_"
     except Exception as e:
-        return await message.reply(f"⚠️ Failed to save message: `{e}`")
+        return await message.reply(f"⚠️ Error: {e}")
 
     file_id = str(post.id)
-    string = f"file_{file_id}"
-    outstr = base64.urlsafe_b64encode(string.encode("ascii")).decode().strip("=")
+    outstr = base64.urlsafe_b64encode((prefix + file_id).encode("ascii")).decode().strip("=")
 
     user_id = message.from_user.id
     user = await get_user(user_id)
@@ -79,14 +79,10 @@ async def gen_link_s(bot, message):
         share_link = f"https://t.me/{username}?start={outstr}"
 
     if user.get("base_site") and user.get("shortener_api"):
-        try:
-            short_link = await get_short_link(user, share_link)
-            await message.reply(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\n🖇️ sʜᴏʀᴛ ʟɪɴᴋ :- {short_link}</b>")
-        except Exception as e:
-            await message.reply(f"⚠️ Shorten Failed: `{e}`")
+        short_link = await get_short_link(user, share_link)
+        await message.reply(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\n🖇️ sʜᴏʀᴛ ʟɪɴᴋ :- {short_link}</b>")
     else:
         await message.reply(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\n🔗 ᴏʀɪɢɪɴᴀʟ ʟɪɴᴋ :- {share_link}</b>")
-        
 
 # Don't Remove Credit Tg - @VJ_Botz
 # Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
