@@ -49,11 +49,7 @@ async def incoming_gen_link(bot, message):
         await message.reply(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\n🔗 ᴏʀɪɢɪɴᴀʟ ʟɪɴᴋ :- {share_link}</b>")
         
 
-@Client.on_message(
-    filters.command(['link']) &
-    (filters.reply & (filters.document | filters.video | filters.audio | filters.photo | filters.text)) &
-    filters.create(allowed)
-)
+@Client.on_message(filters.command(['link']) & filters.create(allowed))
 async def gen_link_s(bot, message):
     username = (await bot.get_me()).username
     replied = message.reply_to_message
