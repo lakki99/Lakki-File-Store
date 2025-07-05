@@ -1,74 +1,49 @@
 import re
-from pyrogram import filters, Client, enums
-from pyrogram.errors.exceptions.bad_request_400 import ChannelInvalid, UsernameInvalid, UsernameNotModified
-from config import ADMINS, LOG_CHANNEL, PUBLIC_FILE_STORE, WEBSITE_URL, WEBSITE_URL_MODE
-from plugins.users_api import get_user, get_short_link
-import os
-import json
-import base64
+import re from pyrogram import filters, Client, enums from pyrogram.errors.exceptions.bad_request_400 import ChannelInvalid, UsernameInvalid, UsernameNotModified from config import ADMINS, LOG_CHANNEL, PUBLIC_FILE_STORE, WEBSITE_URL, WEBSITE_URL_MODE from plugins.users_api import get_user, get_short_link import os import json import base64
 
-# Don't Remove Credit Tg - @VJ_Botz
-# Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
-# Ask Doubt on telegram @KingVJ01
+Don't Remove Credit Tg - @VJ_Botz
 
-async def allowed(_, __, message):
-    if PUBLIC_FILE_STORE:
-        return True
-    if message.from_user and message.from_user.id in ADMINS:
-        return True
-    return False
+Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
 
+Ask Doubt on telegram @KingVJ01
 
-@Client.on_message((filters.document | filters.video | filters.audio) & filters.private & filters.create(allowed))
-async def incoming_gen_link(bot, message):
-    username = (await bot.get_me()).username
-    post = await message.copy(LOG_CHANNEL)
-    file_id = str(post.id)
-    string = 'file_' + file_id
-    outstr = base64.urlsafe_b64encode(string.encode("ascii")).decode().strip("=")
-    user_id = message.from_user.id
-    user = await get_user(user_id)
-    if WEBSITE_URL_MODE:
-        share_link = f"{WEBSITE_URL}?Tech_VJ={outstr}"
-    else:
-        share_link = f"https://t.me/{username}?start={outstr}"
-    if user["base_site"] and user["shortener_api"] is not None:
-        short_link = await get_short_link(user, share_link)
-        await message.reply(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\n🖇️ sʜᴏʀᴛ ʟɪɴᴋ :- {short_link}</b>")
-    else:
-        await message.reply(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\n🔗 ᴏʀɪɢɪɴᴀʟ ʟɪɴᴋ :- {share_link}</b>")
+async def allowed(_, __, message): if PUBLIC_FILE_STORE: return True if message.from_user and message.from_user.id in ADMINS: return True return False
 
+@Client.on_message((filters.document | filters.video | filters.audio) & filters.private & filters.create(allowed)) async def incoming_gen_link(bot, message): username = (await bot.get_me()).username post = await message.copy(LOG_CHANNEL) file_id = str(post.id) string = 'file_' + file_id outstr = base64.urlsafe_b64encode(string.encode("ascii")).decode().strip("=") user_id = message.from_user.id user = await get_user(user_id) if WEBSITE_URL_MODE: share_link = f"{WEBSITE_URL}?Tech_VJ={outstr}" else: share_link = f"https://t.me/{username}?start={outstr}" if user["base_site"] and user["shortener_api"] is not None: short_link = await get_short_link(user, share_link) await message.reply(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\n🖇️ sʜᴏʀᴛ ʟɪɴᴋ :- {short_link}</b>") else: await message.reply(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\n🔗 ᴏʀɪɢɪɴᴀʟ ʟɪɴᴋ :- {share_link}</b>")
 
-@Client.on_message(filters.command(['link']) & filters.create(allowed))
-async def gen_link_s(bot, message):
-    username = (await bot.get_me()).username
-    replied = message.reply_to_message
+@Client.on_message(filters.command(['link']) & filters.create(allowed)) async def gen_link_any(bot, message): replied = message.reply_to_message if not replied: return await message.reply('⚠️ Reply to any message (text, file, photo, sticker, etc.) to get a shareable link.')
 
-    if not replied:
-        return await message.reply('⚠️ Reply to *any* message (text/file/photo/etc.) to get a shareable link.')
+username = (await bot.get_me()).username
 
-    try:
+try:
+    if replied.media:
         post = await replied.copy(LOG_CHANNEL)
-    except Exception as e:
-        return await message.reply(f"❌ Failed to save message to LOG_CHANNEL: `{e}`")
-
-    file_id = str(post.id)
-    string = f"file_{file_id}"
-    outstr = base64.urlsafe_b64encode(string.encode("ascii")).decode().strip("=")
-
-    user_id = message.from_user.id
-    user = await get_user(user_id)
-
-    if WEBSITE_URL_MODE:
-        share_link = f"{WEBSITE_URL}?Tech_VJ={outstr}"
     else:
-        share_link = f"https://t.me/{username}?start={outstr}"
+        post = await bot.send_message(
+            chat_id=LOG_CHANNEL,
+            text=replied.text or replied.caption or "Empty Text",
+            entities=replied.entities or replied.caption_entities,
+        )
+except Exception as e:
+    return await message.reply(f"❌ Failed to save message to LOG_CHANNEL: `{e}`")
 
-    if user and user.get("base_site") and user.get("shortener_api"):
-        short_link = await get_short_link(user, share_link)
-        return await message.reply(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\n🖇️ sʜᴏʀᴛ ʟɪɴᴋ :- {short_link}</b>")
-    else:
-        return await message.reply(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\n🔗 ᴏʀɪɢɪɴᴀʟ ʟɪɴᴋ :- {share_link}</b>")
+file_id = str(post.id)
+string = f"file_{file_id}"
+outstr = base64.urlsafe_b64encode(string.encode("ascii")).decode().strip("=")
+
+user_id = message.from_user.id
+user = await get_user(user_id)
+
+if WEBSITE_URL_MODE:
+    share_link = f"{WEBSITE_URL}?Tech_VJ={outstr}"
+else:
+    share_link = f"https://t.me/{username}?start={outstr}"
+
+if user and user.get("base_site") and user.get("shortener_api"):
+    short_link = await get_short_link(user, share_link)
+    return await message.reply(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\n🖇️ sʜᴏʀᴛ ʟɪɴᴋ :- {short_link}</b>")
+else:
+    return await message.reply(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\n🔗 ᴏʀɪɢɪɴᴀʟ ʟɪɴᴋ :- {share_link}</b>")
 
 
 @Client.on_message(filters.command(['batch']) & filters.create(allowed))
